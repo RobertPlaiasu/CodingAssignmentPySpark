@@ -4,19 +4,23 @@ from pyspark.sql import SparkSession
 def main():
     # Initialize SparkSession
     spark = SparkSession.builder \
-        .appName("HelloWorld") \
+        .appName("Assignment") \
         .getOrCreate()
 
-    # Create an RDD containing numbers from 1 to 10
-    numbers_rdd = spark.sparkContext.parallelize(range(1, 1000))
+    data_folder = '/opt/spark/data'
+    # read data
+    facebook_df = spark.read.csv(data_folder + '/facebook_dataset.csv', header=True, inferSchema=True)
 
-    # Count the elements in the RDD
-    count = numbers_rdd.count()
+    facebook_df.printSchema()
+    google_df = spark.read.csv(data_folder + '/google_dataset.csv', header=True, inferSchema=True)
 
-    print(f"Count of numbers from 1 to 1000 is: {count}")
+    google_df.printSchema()
 
-    # Stop the SparkSession
-    spark.stop()
+    website_df = spark.read.csv(data_folder + '/website_dataset.csv', header=True, inferSchema=True,
+                                sep=';')
+    website_df.printSchema()
+
+
 
 
 if __name__ == "__main__":
